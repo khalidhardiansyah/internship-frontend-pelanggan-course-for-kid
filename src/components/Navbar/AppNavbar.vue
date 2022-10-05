@@ -1,0 +1,33 @@
+<template>
+     <div class="relative shrink-0 flex justify-between h-16 bg-primary" >
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center">
+
+
+            </div>
+            <font-awesome-icon  icon="fa-solid fa-bars " class="lg:hidden  text-black cursor-pointer" size="2x" @click="toggleShowNavbar" v-if="getShowNav"/>
+        </div>
+        <div class="flex justify-between items-center space-x-4 px-4">
+            <div class="flex items-center">
+                <profile-dropdown/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+
+import { computed } from '@vue/runtime-core';
+import { useStore } from 'vuex';
+import ProfileDropdown from '../dropdown/ProfileDropdown.vue';
+const store = useStore()
+
+const showNav = computed(()=>{
+    store.state.showmobilenav
+})
+const getShowNav = computed(() => store.getters.getShowMobileNav)
+function toggleShowNavbar(){
+    store.dispatch('toggleNav')
+}
+</script>
+
