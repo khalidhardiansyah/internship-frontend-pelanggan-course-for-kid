@@ -1,14 +1,13 @@
 <template>
   <div
-    class="flex flex-col justify-center items-center min-h-screen bg-[#CDFFFC]"
+    class="flex flex-col justify-center items-center min-h-screen bg-primary"
   >
-    <div class="bg-white w-10/12 sm:w-1/3 rounded-lg border border-black shadow-md">
+    <div class="bg-white w-10/12 sm:w-1/3 rounded-lg shadow-md">
       <div class="card-body w-full items-center text-center text-black">
         <h2 class="card-title text-4xl font-bold">{{ title }}</h2>
         <p class="text-md">Silkan Login menggunakan Email dan Password</p>
         <form  @submit.prevent="" class="form-control w-full max-w-xs items-center">
-          <success-alert msg="login berhasil"/>
-          <error-alert msg="login error"/>   
+          <error-alert  v-if="errMsg" :msg="errMsg"/>   
           <base-input type="email" label="Email" ph="Email" size="md" v-model="form.email" @blur="v$.email.$touch" />
             <span class="label py-0 w-full text-left -ml-1 text-red-600" v-for="error in v$.email.$errors" :key="error.$uid">{{ error.$message }}</span>
             <div class="passwod-group relative w-full mt-2">
@@ -19,12 +18,20 @@
                 <show-pass @click="showpass = !showpass" v-else class="absolute right-3 top-10 cursor-pointer"/>
             </div>
             
-            <base-button @click="submitLogin" class="mt-4"  size="xl" design="primary">Login</base-button>
+            <base-button @click="submitLogin" class="mt-4"  size="xl" design="primary">
+            <div class="flex gap-3 items-center">
+              <img src="../assets/loading/Looper-2.svg" alt="" srcset="" v-if="loading">
+              <span>Login</span>
+            </div>  
+          </base-button>
             <div class="w-48 my-2">
                 <div class="divider m-0 before:bg-stone-600/[.10] after:bg-stone-600/[.10] ">atau</div>
             </div>
             <base-button type="button" @click="toRegister" class="" size="xl" design="secondary">Register</base-button>
         </form>
+        <span class="my-3">
+          kembali ke <router-link to="/" class="underline">home</router-link>
+        </span>
       </div>
       
     </div>
@@ -40,8 +47,10 @@ import {required, email, minLength, } from '@vuelidate/validators'
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
-
 const showpass = ref(true)
+const loading = ref(false)
+
+const errMsg = computed(()=>store.getters.getErrMsg)
 
 function toRegister(){
     router.push({
@@ -61,28 +70,32 @@ const rules = computed(()=>{
               },
   password:{
               required,
-              minLength:minLength(8),
+              minLength:minLength(6),
             }
 }
 })
 const v$ = useVuelidate(rules, form)
 
 const submitLogin = async ( )=>{
+  loading.value = !loading.value
   const result = await v$.value.$validate()
-  router.push({
-        name:'dashboard'
-    })
-    console.log("ss");
-  // if(result){
-  //   console.log("sss");
-  // }else{
-  //   console.log("tidak benar");
-  // }
+  if(result){
+    try {
+      store.dispatch("LOGIN", form)
+      .then(res=>{
+        loading.value = !loading.value
+      })
+      .catch(err=>{
+        loading.value = !loading.value
+      })
+    } catch (error) {
+      loading.value = !loading.value
+    }
+  }
 }
 
 const title = computed(() => store.getters.getWebTitle)
 onMounted(() => {
-
-  
+  store.commit("setErrMsg", null)
 })
 </script>

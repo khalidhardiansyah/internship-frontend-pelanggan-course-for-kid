@@ -12,10 +12,13 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          primary: "#FF884B",
-          secondary:'#FFC764'
+          primary: "#146356",
+          secondary:'#A3DA8D'
         },
       },
     ],
+    corePlugins: {
+      preflight: false,
+    },
   },
 }

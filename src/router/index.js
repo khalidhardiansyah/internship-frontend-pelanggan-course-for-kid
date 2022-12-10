@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '@/store'
+import {computed} from "vue"
+
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -37,10 +40,14 @@ const routes= [
     name:'register',
     component:RegisterView
   },
+ 
   {
     path:'/mydashboard',
     name:'authlayout',
     component: AuthLayout,
+    meta:{
+      requiresAuth: true
+},
     children:[
       {
         path:'/dashboard',
@@ -62,6 +69,35 @@ const routes= [
         name:'listclass',
         component: ListClassView
       },
+      {
+        path:'/edit-profile/:id',
+        name:'edit-profile',
+        component: ()=>import('../views/user/EditProfileView.vue')
+    
+      },
+      {
+        path:'/checkout/:id',
+        name: 'checkout',
+        component: ()=>import('../views/user/CheckoutView.vue')
+      },
+      
+      {
+        path:'/class/:id',
+        name:'classlayout',
+        component:()=>import('../views/user/ClassDetailsLayout.vue'),
+        children:[
+          {
+            path:'',
+            name:'classdetail',
+            component:()=>import('../views/user/ClassDetailView.vue')
+          },
+          {
+            path:'/details/:id',
+            name:'details',
+            component:()=>import('../views/user/ContentDetails.vue'),
+          }
+        ]
+      }
     ]
   },
   { path: "/:pathMatch(.*)*", component: NotFound },
@@ -71,5 +107,23 @@ const router = createRouter({
   routes,
   linkExactActiveClass: "active"
 })
+
+const getAuth = computed(()=>store.getters.getAuth)
+// router.beforeEach((to, from, next)=>{
+//   if (to.matched.some(record =>record.meta.requiresAuth)) { 
+//     // cek authentikasi user
+//     if( getAuth.value === null){ 
+//       // jika tidak login maka lempar ke login
+//       next({
+//         name: 'home'
+//       });
+//     }else{
+//       // jika login maka lanjut ke dashboard
+//       next()
+//     }
+//   }else{
+//     next();
+//   }
+// })
 
 export default router

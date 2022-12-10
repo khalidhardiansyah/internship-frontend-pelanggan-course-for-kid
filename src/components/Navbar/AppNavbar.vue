@@ -9,7 +9,7 @@
         </div>
         <div class="flex justify-between items-center space-x-4 px-4">
             <div class="flex items-center">
-                <profile-dropdown/>
+                <profile-dropdown :username="me.name"/>
             </div>
         </div>
     </div>
@@ -17,7 +17,7 @@
 
 <script setup>
 
-import { computed } from '@vue/runtime-core';
+import { computed, onMounted } from '@vue/runtime-core';
 import { useStore } from 'vuex';
 import ProfileDropdown from '../dropdown/ProfileDropdown.vue';
 const store = useStore()
@@ -25,9 +25,17 @@ const store = useStore()
 const showNav = computed(()=>{
     store.state.showmobilenav
 })
+
+
+
 const getShowNav = computed(() => store.getters.getShowMobileNav)
 function toggleShowNavbar(){
     store.dispatch('toggleNav')
 }
+const me = computed(()=> store.getters.getMe)
+const name = computed(()=> store.state.me)
+onMounted(() => {
+    
+})
 </script>
 

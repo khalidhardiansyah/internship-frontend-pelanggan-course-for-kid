@@ -1,13 +1,10 @@
 <template>
   <ul class="menu_items flex flex-col sm:flex-row gap-3 ">
     <li v-for="(category, id) in categories" :key="id" class=" bg-primary rounded-md cursor-pointer">
-      <div class="menu flex flex-row items-center gap-4 px-4 py-2 sm:px-6 ">
+      <div class="menu flex flex-row items-center gap-4 px-4 py-2 sm:px-5 ">
         <div class="avatar">
-          <div class="w-7 sm:w-10 rounded-full">
-            <img :src="category.path_icon" />
-          </div>
         </div>
-        <h3 class="text-sm sm:text-lg font-semibold">
+        <h3 class="text-sm sm:text-lg font-normal text-white">
             {{ category.label }}
         </h3>
       </div>

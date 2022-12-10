@@ -8,7 +8,8 @@
         'btn-xs':size==='xs',
 
         'btn-primary':design==='primary',
-        'btn-secondary':design==='secondary'
+        'btn-secondary':design==='secondary',
+        'btn-outline btn-primary':design==='outline-primary'
         
     }">
         <slot></slot>

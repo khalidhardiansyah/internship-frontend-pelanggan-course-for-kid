@@ -1,20 +1,40 @@
 <template>
-  <div class="card w-full sm:w-56 bg-base-100 shadow-xl">
+  <div class="w-full sm:w-56 h-60 rounded-md px-5 py-3 bg-base-100 cursor-pointer shadow-sm hover:shadow-md">
     <figure>
-      <img src="https://pbs.twimg.com/card_img/1573111542635167747/pTQOQnhf?format=png&name=medium" alt="Shoes" />
+      <img :src="thumb" :alt="alter" />
     </figure>
-    <div class="body p-3 ">
+    <div class="body py-1">
       <h2 class="capitalize text-lg tracking-wide font-bold">
-        React - Build your React App...
+        {{ title }}
       </h2>
-      <h4 class="capitalize text-sm text-gray-400">Satria Yoga</h4>
+      <div class="desc">
+        <p class="text-gray-600 font-semibold">{{ desc }}...</p>
     </div>
-    <div class="card-actions px-3 pb-4">
-      <base-button size="xs">Mulai Belajar</base-button>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+defineProps({
+  thumb:{
+    type: String,
+    required: true
+  },
+  title:{
+    type: String,
+    required: true
+  },
+  desc:{
+    type: String,
+    required: true
+  },
+  alter:{
+    type: String,
+    required: true
+  },
+
+})
+
+</script>
 
 <style lang="scss" scoped></style>

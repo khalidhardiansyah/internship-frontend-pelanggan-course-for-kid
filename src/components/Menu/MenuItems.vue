@@ -1,7 +1,7 @@
 <template>
      <ul class="space-y-2 mt-5 capitalize">
-         <li v-for="(navigation, index) in navigations" :key="index" class="tracking-wide">
-            <router-link :to="{ name:navigation.name}" class="item flex items-center p-2 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100">
+         <li v-for="(navigation, index) in navigations" :key="index" class="tracking-wide list-none">
+            <router-link :to="{ name:navigation.name}" class="item no-underline flex items-center p-2 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100">
                <font-awesome-icon :icon="navigation.icon" size="lg"/>
                <span class="ml-3">{{ navigation.label }}</span>
             </router-link>
@@ -12,11 +12,11 @@
 <script setup>
 
 const navigations = [
-    {
-        label:'Dashboard',
-        name:'dashboard',
-        icon:'fa-solid fa-house'
-    },
+    // {
+    //     label:'Dashboard',
+    //     name:'dashboard',
+    //     icon:'fa-solid fa-house'
+    // },
     {
         label:'kelas saya',
         name:'myclass',

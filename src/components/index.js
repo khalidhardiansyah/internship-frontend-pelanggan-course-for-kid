@@ -6,6 +6,7 @@ import SuccessAlert from '../components/Alert/SuccessAlert.vue'
 import ErrorAlert from '../components/Alert/ErrorAlert.vue'
 import CardTable from '../components/ResponsiveTable/CardTable.vue'
 import Vue3EasyDataTable from 'vue3-easy-data-table';
+import LoadingSpin from '../components/loading/spiner.vue'
 
 
 // partial
@@ -40,5 +41,6 @@ export default app =>{
     app.component('error-alert', ErrorAlert)
     app.component('EasyDataTable', Vue3EasyDataTable),
     app.component('card-table', CardTable)
+    app.component('loading-spin', LoadingSpin)
 
 }
