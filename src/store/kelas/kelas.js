@@ -2,11 +2,15 @@ import axios from "../../api/axios"
 export default {
   state: {
     kelas: [],
+    kelasByCategory: [],
+
     // errMsg: null,
   },
   getters: {
     // getErrMesg: (state) => state.errMsg,
-    getKelas:(state)=>state.kelas
+    getKelas:(state)=>state.kelas,
+    getKelasByCategory:(state)=>state.kelasByCategory
+
   },
   mutations: {
     // setErrMsg(state, errMsg) {
@@ -14,7 +18,10 @@ export default {
     // },
     setKelas(state, kelas){
         state.kelas = kelas
-    }
+    },
+    setKelasByCategory(state, kelasByCategory){
+      state.kelasByCategory = kelasByCategory
+  }
   },
   actions: {
     async GET_KELAS({commit}) {
@@ -34,7 +41,15 @@ export default {
             commit("setKelas", res.data)
            })
         } catch (error) {
-          console.error(error);
+        }
+      },
+      async GET_KELAS_BY_CATEGORY({commit}, payload) {
+        try {
+           await axios.get('/kelas/category/'+payload)
+           .then(res=>{
+            commit("setKelasByCategory", res.data)
+           })
+        } catch (error) {
         }
       }
   },

@@ -76,6 +76,23 @@ const routes= [
     
       },
       {
+        path:'/free-class/:id',
+        name:'free-class',
+        component:()=>import('../views/user/ClassGratisLayout.vue'),
+        children:[
+          {
+            path:'',
+            name:'class-detail',
+            component:()=>import('../views/user/ClassGratisView.vue')
+          },
+          {
+            path:'/free-content-details/:id',
+            name:'free-details',
+            component:()=>import('../views/user/ContentGratis.vue'),
+          }
+        ]
+      },
+      {
         path:'/checkout/:id',
         name: 'checkout',
         component: ()=>import('../views/user/CheckoutView.vue')

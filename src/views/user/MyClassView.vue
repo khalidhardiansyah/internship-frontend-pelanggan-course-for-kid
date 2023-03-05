@@ -8,7 +8,7 @@
             :desc="langganan.kela.deskripsi_kelas.substr(0, 15)"/>
     </div>
     <div class="empty rounded-md h-auto w-full px-6 py-5 bg-slate-200" v-else>
-      <div class="text text-xl font-normal">
+      <div class="text text-md sm:text-xl font-normal">
         <span>Belum ada kelas, Silahkan membeli kelas </span><router-link to="/list-class" class="underline underline-offset-4 font-bold tracking-wider hover:text-blue-900 hover:decoration-blue-900">disini</router-link> 
       </div>
     </div>

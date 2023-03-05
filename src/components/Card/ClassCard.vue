@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full sm:w-56 h-60 rounded-md px-5 py-3 bg-base-100 cursor-pointer shadow-sm hover:shadow-md">
+  <div class="card w-full sm:w-56 h-60 rounded-md px-5 py-3 bg-base-100 cursor-pointer shadow-sm hover:shadow-md">
     <figure>
       <img :src="thumb" :alt="alter" />
     </figure>

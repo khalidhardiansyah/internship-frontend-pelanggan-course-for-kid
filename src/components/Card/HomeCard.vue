@@ -1,6 +1,6 @@
 <template>
         <div
-          class="outer__card text-black flex flex-row  w-[510px] px-6 py-3 justify-between gap-4"
+          class="outer__card text-black flex flex-row  sm:w-[510px] px-6 py-1 sm:py-3 justify-between gap-4"
         >
           <div
             class="card__number text-white bg-primary h-9 w-9 rounded-full flex flex-col items-center justify-center"

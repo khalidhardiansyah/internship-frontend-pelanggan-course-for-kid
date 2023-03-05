@@ -1,10 +1,10 @@
 <template>
 <div class="dropdown dropdown-end flex text-white items-center space-x-4 cursor-pointer" tabindex="0">
-    <h3 class="capitalize font-semibold">
+    <h3 class="capitalize text-md sm:text-base font-semibold">
         Hallo, {{ username }}
     </h3>
     <button>
-    <ProfileIcon />
+    <ProfileIcon class="h-8" />
     </button>
     <DropdownMenuItem/>
 </div>

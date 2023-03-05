@@ -6,12 +6,12 @@
       ab fugit non sequi
     </p>
     <div class="flex flex-col mt-6">
-      <h1 class="text-xl font-bold mb-4">Browse by Category</h1>
-      <div class="category_menu w-full">
+      <h1 class="text-md sm:text-xl font-bold mb-4">Browse by Category</h1>
+      <div class="category_menu w-full ">
         <select
           class="select w-full max-w-xs"
           v-model="selected"
-          @change="selecCategory(selected)"
+          @change="selectCategory(selected)"
         >
         <option value="all">All</option>
           <option v-for="categories in getCategories" :value="categories.id">
@@ -19,52 +19,33 @@
           </option>
         </select>
       </div>
-      <h1 class="text-xl font-bold my-4">List Course</h1>
-      <div class="flex flex-col sm:flex-row gap-5">
-        <class-sale-card
-          v-if="getKelas.length && selected=='all'"
-          v-for="kelas in getKelas"
-          :img="kelas.thumbnail_url"
-          :title="kelas.name"
-          :harga="kelas.harga"
-          @click="
-            router.push({
-              path: `checkout/${kelas.id}`,
-            })
-          "
-        />
-
-        <div
-          class="empty rounded-md h-auto w-full px-6 py-5 bg-slate-200"
-          v-if="!getKelas.length"
-        >
-          <div class="text text-xl font-normal">
-            <span>Kelas Belum tersedia</span>
-          </div>
-        </div>
-        
-        <div v-for="item in getCategory" class="flex flex-col sm:flex-row gap-5">
+      <h1 class="text-md sm:text-xl font-bold my-4">List Course</h1>
+        <div class="flex flex-col sm:flex-row gap-5">
           <class-sale-card
-            v-for="kelas in item.kelas"
+            v-for="kelas in smallList"
             :img="kelas.thumbnail_url"
             :title="kelas.name"
             :harga="kelas.harga"
             @click="
               router.push({
-                path: `checkout/${kelas.id}`,
+                path: `free-class/${kelas.id}`,
               })
             "
           />
         </div>
-      </div>
+        <div class="btn-group flex flex-row justify-center mt-3" v-if="getKelasCategory.length > 5">
+          <button class="btn btn-sm text-white btn-primary" @click="prevPage" :disabled="currentPage === 1">«</button>
+          <button class="btn btn-sm btn-secondary">Page {{ currentPage }}</button>
+        <button class="btn btn-sm text-white btn-primary" @click="nextPage" :disabled="maxPage">»</button>
+</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import CategoryItems from "../../components/Menu/CategoryItems.vue";
 import ClassSaleCard from "../../components/Card/ClassSaleCard.vue";
-import { onMounted, computed, ref } from "vue";
+import { usePagination } from "../../composables/Pagination";
+import { onMounted, computed, ref,   } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -74,27 +55,33 @@ const store = useStore();
 
 const selected = ref('all');
 
-const kelas = computed(() => {
-  return store.state.kelas;
+const kelasCategory = computed(() => {
+  return store.state.kelasByCategory;
 });
 
-const getKelas = computed(() => {
-  return store.getters.getKelas;
+const getKelasCategory = computed(() => {
+  return store.getters.getKelasByCategory;
 });
 
 const categories = computed(() => store.state.categories);
 const getCategories = computed(() => store.getters.getCategories);
-const category = computed(() => store.state.category);
-const getCategory = computed(() => store.getters.getCategory);
 
-async function selecCategory() {
-  await store.dispatch("GET_CATEGORIES_BY_ID", selected.value);
+async function selectCategory() {
+  await store.dispatch("GET_KELAS_BY_CATEGORY", selected.value);
 }
 
+const {pageSize, currentPage, smallList, maxPage, lastPageSize, nextPage, prevPage,listData,
+} = usePagination({
+  listData: computed(() => store.getters.getKelasByCategory),
+})
+
 onMounted(() => {
-  store.dispatch("GET_KELAS");
+  store.dispatch("GET_KELAS_BY_CATEGORY", selected.value);
   store.dispatch("GET_CATEGORIES");
 });
+
+
+
 
 </script>
 

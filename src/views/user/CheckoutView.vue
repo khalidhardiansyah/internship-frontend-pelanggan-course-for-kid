@@ -1,52 +1,41 @@
 <template>
   <div class="p-5 bg-gray-100 sm:h-screen text-black">
     <h1 class="text-3xl mb-2 font-bold capitalize">Checkout</h1>
-    <div class="flex flex-row mt-6 justify-between">
-      <div class="w-1/2 px-5 py-3">
+    <div class="flex flex-col sm:flex-row mt-6 justify-between">
+      <div class="w-full sm:w-1/2 px-5 py-3">
         <form @submit.prevent="" class="flex flex-col space-y-1">
           <h3 class="font-bold capitalize text-2xl mb-7">Metode Pembayaran</h3>
-          <base-input
-            type="text"
-            label="Nama Pengirim"
-            ph="Nama Lengkap"
-            size="md"
-            v-model="data.name"
-            @blur=""
-          />
-          <span class="label py-0 w-full text-left -ml-1 text-red-600" v-for="error in v$.name.$errors" :key="error.$uid">{{ error.$message }}</span>
-            
+          <base-input type="text" label="Nama Pengirim" ph="Nama Lengkap" size="md" v-model="data.name" @blur="" />
+          <span class="label py-0 w-full text-left -ml-1 text-red-600" v-for="error in v$.name.$errors"
+            :key="error.$uid">{{ error.$message }}</span>
+
           <label class="label py-0 w-full text-left -ml-1">
-            <span class="label-text capitalize text-black text-lg font-medium"
-              >Pilih Bank</span
-            >
+            <span class="label-text capitalize text-black text-lg font-medium">Pilih Bank</span>
           </label>
           <select
             class="input max-w-xs w-full placeholder:text-black focus:outline-none drop-shadow-md border-black rounded-none input-md"
-            v-model="data.bankId"
-          >
+            v-model="data.bankId">
             <option :value="bank.id" v-for="bank in getBanks">
               {{ bank.name }}
             </option>
           </select>
-          <span class="label py-0 w-full text-left -ml-1 text-red-600" v-for="error in v$.bankId.$errors" :key="error.$uid">{{ error.$message }}</span>
+          <span class="label py-0 w-full text-left -ml-1 text-red-600" v-for="error in v$.bankId.$errors"
+            :key="error.$uid">{{ error.$message }}</span>
 
 
           <label class="label py-0 w-full text-left -ml-1">
-            <span class="label-text capitalize text-black text-lg font-medium"
-              >Kelas</span
-            >
+            <span class="label-text capitalize text-black text-lg font-medium">Kelas</span>
           </label>
           <select
             class="input max-w-xs w-full placeholder:text-black focus:outline-none drop-shadow-md border-black rounded-none input-md"
-            name=""
-            id=""
-          >
+            name="" id="">
             <option :value="getKelas.id">
               {{ getKelas.name }}
             </option>
           </select>
         </form>
       </div>
+
       <div class="class__info flex-1 px-5 py-3">
         <h3 class="font-bold capitalize text-2xl mb-7">Ringkasan</h3>
         <div class="wrapper-card flex flex-row justify-between w-64">
@@ -68,12 +57,7 @@
         <div class="wrapper mt-4 flex flex-col space-y-4">
           <base-button @click="BeliKelas" size="xl" design="primary">
             <loading-spin v-if="loading" />
-            Beli</base-button
-          >
-          <base-button @click="TrialKelas" size="xl" design="outline-primary">
-            <loading-spin v-if="loadingtrial" />
-            Coba Kelas 1 Hari</base-button
-          >
+            Beli</base-button>
         </div>
 
         <div class="toast toast-top toast-end top-20 right-6">
@@ -98,7 +82,6 @@ const router = useRouter();
 
 const loading = ref(false);
 
-const loadingtrial = ref(false);
 
 const bank = computed(() => store.state.banks);
 const getBanks = computed(() => store.getters.getBanks);
@@ -114,19 +97,13 @@ const data = reactive({
   bankId: "",
 });
 
-const dataTrial = reactive({
-  userId: me.value.id,
-  kelaId: route.params.id,
-  isTrial: true
-})
-
 const rules = computed(() => {
   return {
     name: {
       required,
-      minLength:minLength(3)
+      minLength: minLength(3)
     },
-    bankId:{
+    bankId: {
       required
     }
   };
@@ -136,32 +113,20 @@ const v$ = useVuelidate(rules, data);
 async function BeliKelas(params) {
   const result = await v$.value.$validate()
   loading.value = !loading.value;
-  if(result){
+  if (result) {
     await store
-    .dispatch("BELI_KELAS", data)
-    .then((res) => {
-      loading.value = !loading.value;
-    })
-    .catch((err) => {
-      loading.value = !loading.value;
-    });
-  }else{
-  loading.value = !loading.value;
+      .dispatch("BELI_KELAS", data)
+      .then((res) => {
+        loading.value = !loading.value;
+      })
+      .catch((err) => {
+        loading.value = !loading.value;
+      });
+  } else {
+    loading.value = !loading.value;
   }
 }
-async function TrialKelas(params) {
-  loadingtrial.value = !loadingtrial.value;
-    await store
-    .dispatch("TRIAL_KELAS", dataTrial)
-    .then((res) => {
-      loadingtrial.value = !loadingtrial.value;
-    })
-    .catch((err) => {
-      loadingtrial.value = !loadingtrial.value;
-    });
- 
-  
-}
+
 
 
 onMounted(() => {
